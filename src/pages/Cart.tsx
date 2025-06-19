@@ -10,21 +10,21 @@ const Cart = () => {
     {
       id: 1,
       name: "Premium Wireless Headphones",
-      price: 199,
+      price: 14999,
       quantity: 1,
       image: "photo-1505740420928-5e560c06d30e"
     },
     {
       id: 2,
       name: "Designer Leather Jacket",
-      price: 449,
+      price: 33799,
       quantity: 1,
       image: "photo-1551028719-00167b16eac5"
     }
   ];
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const shipping = 15;
+  const shipping = 1199;
   const total = subtotal + shipping;
 
   return (
@@ -47,7 +47,7 @@ const Cart = () => {
                     />
                     <div className="flex-1">
                       <h3 className="text-lg font-semibold text-gray-900">{item.name}</h3>
-                      <p className="text-gray-600">${item.price}</p>
+                      <p className="text-gray-600">₹{item.price.toLocaleString('en-IN')}</p>
                     </div>
                     <div className="flex items-center space-x-2">
                       <button className="p-1 hover:bg-gray-100 rounded">
@@ -73,15 +73,15 @@ const Cart = () => {
             <div className="space-y-2 mb-4">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>${subtotal}</span>
+                <span>₹{subtotal.toLocaleString('en-IN')}</span>
               </div>
               <div className="flex justify-between">
                 <span>Shipping</span>
-                <span>${shipping}</span>
+                <span>₹{shipping.toLocaleString('en-IN')}</span>
               </div>
               <div className="border-t pt-2 flex justify-between font-semibold text-lg">
                 <span>Total</span>
-                <span>${total}</span>
+                <span>₹{total.toLocaleString('en-IN')}</span>
               </div>
             </div>
             <Button className="w-full bg-purple-600 hover:bg-purple-700">
