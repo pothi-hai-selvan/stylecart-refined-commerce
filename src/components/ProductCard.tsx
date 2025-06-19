@@ -1,8 +1,9 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Heart, ShoppingCart } from 'lucide-react';
+import { Heart, ShoppingCart, Eye } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useWishlist } from '@/contexts/WishlistContext';
 
 interface Product {
   id: number;
@@ -16,20 +17,54 @@ interface Product {
 
 interface ProductCardProps {
   product: Product;
+  onQuickView?: (product: Product) => void;
 }
 
-const ProductCard = ({ product }: ProductCardProps) => {
+const ProductCard = ({ product, onQuickView }: ProductCardProps) => {
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+
+  const handleWishlistToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (isInWishlist(product.id)) {
+      removeFromWishlist(product.id);
+    } else {
+      addToWishlist(product);
+    }
+  };
+
+  const handleQuickView = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onQuickView?.(product);
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden group">
       <div className="relative">
         <img
           src={`https://images.unsplash.com/${product.image}?w=400&h=400&fit=crop`}
           alt={product.name}
-          className="w-full h-64 object-cover"
+          className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
         />
-        <button className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md hover:bg-gray-50">
-          <Heart className="h-4 w-4 text-gray-600" />
-        </button>
+        
+        {/* Action buttons */}
+        <div className="absolute top-3 right-3 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <button
+            onClick={handleWishlistToggle}
+            className="p-2 bg-white rounded-full shadow-md hover:bg-gray-50 transition-colors"
+          >
+            <Heart className={`h-4 w-4 ${isInWishlist(product.id) ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} />
+          </button>
+          <button
+            onClick={handleQuickView}
+            className="p-2 bg-white rounded-full shadow-md hover:bg-gray-50 transition-colors"
+          >
+            <Eye className="h-4 w-4 text-gray-600" />
+          </button>
+        </div>
+
         {product.originalPrice && (
           <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded text-sm font-medium">
             {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF

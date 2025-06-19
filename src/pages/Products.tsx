@@ -12,10 +12,14 @@ const Products = () => {
         <div className="bg-gray-100 py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 className="text-4xl font-bold text-gray-900 text-center mb-8">All Products</h1>
-            <p className="text-lg text-gray-600 text-center">Browse our complete collection</p>
+            <p className="text-lg text-gray-600 text-center">Browse our complete collection with advanced filters</p>
           </div>
         </div>
-        <ProductGrid />
+        <ProductGrid 
+          showFilters={true}
+          title="All Products"
+          description="Discover our complete range of premium products"
+        />
       </main>
       <Footer />
     </div>
